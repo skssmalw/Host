@@ -24,6 +24,5 @@ def home():
     return "Flask executor server is running."
 
 # This runs the app on the port Railway gives us
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # default to 5000 if no port env var
-    app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+     app.run(host='0.0.0.0', port=5000)
