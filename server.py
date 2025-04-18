@@ -1,21 +1,19 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 
 app = Flask(__name__)
+
+# Replace with your secret key
+SECRET_KEY = "7x@K3!-dAqZ9$-LbT#uYvG2Wp*-oF^6NeRs"
 latest_script = ""
 
 @app.route('/execute', methods=['POST'])
 def execute():
+    # Check if the authorization header matches the secret key
+    if request.headers.get("X-Auth") != SECRET_KEY:
+        abort(401)  # Unauthorized
     global latest_script
-    latest_script = request.data.decode('utf-8')  # Store the script received in the POST request
+    latest_script = request.data.decode('utf-8')
     return "OK"
 
-@app.route('/getscript', methods=['GET'])
-def get_script():
-    return latest_script or ""  # Return the latest script sent via the /execute endpoint
-
-@app.route('/')
-def home():
-    return "Flask executor server is running."
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)  # Running on all addresses, port 8080
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
